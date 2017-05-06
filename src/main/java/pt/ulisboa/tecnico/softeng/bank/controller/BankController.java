@@ -31,7 +31,9 @@ public class BankController {
 		logger.info("bankSubmit name:{}, code:{}", bank.getName(), bank.getCode());
 
 		try {
-			new Bank(bank.getName(), bank.getCode());
+			Bank b = new Bank(bank.getName(), bank.getCode());
+            new Client(b, "ID01", "Zé", 22);
+            new Client(b, "ID02", "Manel", 44);
 		} catch (BankException be) {
 			model.addAttribute("error", "Error: it was not possible to create the bank");
 			model.addAttribute("bank", bank);
@@ -47,9 +49,6 @@ public class BankController {
 		logger.info("showBank code:{}", code);
 
 		Bank bank = Bank.getBankByCode(code);
-
-		new Client(bank, "ID01", "Zé", 22);
-		new Client(bank, "ID02", "Manel", 44);
 
 		model.addAttribute("bank", bank);
 		return "bank";
