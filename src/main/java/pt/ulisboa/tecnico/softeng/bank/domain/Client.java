@@ -1,5 +1,7 @@
 package pt.ulisboa.tecnico.softeng.bank.domain;
 
+import pt.ulisboa.tecnico.softeng.bank.exception.ClientException;
+
 public class Client {
 	private Bank bank;
 	private String id;
@@ -10,12 +12,18 @@ public class Client {
 	}
 
 	public Client(Bank bank, String id, String name, int age) {
+        checkDuplicateClient(bank, id);
 		this.bank = bank;
 		this.id = id;
 		this.name = name;
 		this.age = age;
 
 		bank.addClient(this);
+	}
+
+	public void checkDuplicateClient(Bank bank, String id) {
+		if (bank.getClientById(id) != null)
+			throw new ClientException();
 	}
 
 	public Bank getBank() {

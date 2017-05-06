@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import pt.ulisboa.tecnico.softeng.bank.domain.Bank;
 import pt.ulisboa.tecnico.softeng.bank.domain.Client;
-import pt.ulisboa.tecnico.softeng.bank.exception.BankException;
+import pt.ulisboa.tecnico.softeng.bank.exception.ClientException;
 
 @Controller
 @RequestMapping(value = "/banks/bank/{code}/clients")
@@ -35,13 +35,21 @@ public class ClientController {
         model.addAttribute("bank", bank);
 		try {
 			new Client(bank, client.getId(), client.getName(), client.getAge());
-		} catch (BankException be) {
-			model.addAttribute("error", "Error: it was not possible to create the client");
-			model.addAttribute("client", bank);
+		} catch (ClientException be) {
+			model.addAttribute("error", "Error: this ID already exists in this bank");
 			model.addAttribute("clients", bank.getClients());
 			return "bank";
 		}
 
-		return "redirect:/bank";
+		return "redirect:/banks/bank/{code}/clients";
+	}
+
+	@RequestMapping(value = "/client/{id}", method = RequestMethod.GET)
+	public String showClient(Model model, @PathVariable String id, @PathVariable String code) {
+		logger.info("showClient id:{} for bankCode:{}", id, code);
+		Bank bank = Bank.getBankByCode(code);
+		Client client = bank.getClientById(id);
+        model.addAttribute("client", client);
+        return "client";				
 	}
 }

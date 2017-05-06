@@ -36,7 +36,6 @@ public class BankController {
             new Client(b, "ID02", "Manel", 44);
 		} catch (BankException be) {
 			model.addAttribute("error", "Error: it was not possible to create the bank");
-			model.addAttribute("bank", bank);
 			model.addAttribute("banks", Bank.banks);
 			return "banks";
 		}
@@ -47,10 +46,8 @@ public class BankController {
 	@RequestMapping(value = "/bank/{code}", method = RequestMethod.GET)
 	public String showBank(Model model, @PathVariable String code) {
 		logger.info("showBank code:{}", code);
-
 		Bank bank = Bank.getBankByCode(code);
-
 		model.addAttribute("bank", bank);
-		return "bank";
+		return "redirect:/banks/bank/{code}/clients";
 	}
 }

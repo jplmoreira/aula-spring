@@ -82,4 +82,10 @@ public class Bank {
 		return null;
 	}
 
+    public Client getClientById(String id) {
+        for (Client client : clients)
+            if (client.getId().equals(id))
+                return client;
+        return null;
+    }
 }
